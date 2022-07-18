@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/maxnab/books/issues"
   },
-  "homepage": "https://github.com/maxnab/books#readme"
+  "homepage": "https://github.com/maxnab/books#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }
