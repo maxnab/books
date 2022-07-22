@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { v4: uuid } = require("uuid");
 const fileMulter = require("../middleware/file");
+const path = require("path");
 
 class Book {
   constructor(title = '',
@@ -105,14 +106,14 @@ router.delete('/:id', (request, response) => {
   }
 })
 
-router.get('/:id/download', upload.single("filedata"),(request, response) => {
+router.get('/:id/download', (request, response) => {
   const { books } = shelf;
   const { id } = request.params;
   const idx = books.findIndex(el => el.id === id);
-  console.log('idx', idx, __dirname + books[idx].fileBook);
 
   if( idx !== -1) {
-    // express.static(__dirname + books[idx].fileBook);
+    response.attachment(path.resolve(__dirname, books[idx].fileBook));
+    response.send();
   } else {
     response.status(404)
     response.json({ message: 'Book not found', code: 404 })
