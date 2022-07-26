@@ -1,10 +1,13 @@
+<%- include('./styles') %>
 <%- include('./menu') %>
-<ul>
-    <% books.map((book) => { %>
-    <li>
-        <a href="/api/books/<%= book.id %>/view">
-            <%= book.title %>
-        </a>
-    </li>
-    <% }) %>
-</ul>
+<div class="wrap">
+    <ol>
+        <% books.map((book) => { %>
+            <li>
+                <a href="/api/books/<%= book.id %>/view">
+                    <%= book.title %>
+                </a>
+            </li>
+        <% }) %>
+    </ol>
+</div>

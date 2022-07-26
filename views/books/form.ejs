@@ -1,36 +1,32 @@
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" class="wrap">
     <div>
-        <div>
-            <label for="inputTitle">Название</label>
-            <input id="inputTitle" type="text" value="<%= book.title %>" name="title">
+        <div class="input">
+            <label for="inputTitle">Title</label>
+            <input id="inputTitle" type="text" value="<%= book.title %>" name="title" required>
         </div>
-        <div>
-            <label for="inputDescription">Описание</label>
+        <div class="input">
+            <label for="inputDescription">Description</label>
             <textarea id="inputDescription" name="description"><%= book.description %></textarea>
         </div>
-        <div>
-            <label for="inputAuthors">Авторы</label>
+        <div class="input">
+            <label for="inputAuthors">Authors</label>
             <input id="inputAuthors" type="text" value="<%= book.authors %>" name="authors">
         </div>
-        <div>
-            <label for="inputFavorite">Избранное</label>
-            <input id="inputFavorite" type="checkbox" checked="<%= book.favorite %>" name="favorite">
+        <div class="input">
+            <label for="inputFavorite">Favorite</label>
+            <input id="inputFavorite" type="checkbox" checked="<%= book.favorite %>" value="<%= book.favorite %>" name="favorite">
         </div>
 <!--        Не уверен что за поле-->
 <!--        <div>-->
 <!--            <label for="inputFileCover">Обложка</label>-->
 <!--            <input id="inputFileCover" type="text" value="<%= book.fileCover %>" name="fileCover">-->
 <!--        </div>-->
-        <div>
-            <label for="inputFileBook">Книга</label>
-            <input id="inputFileBook" type="file" value="<%= book.fileBook %>" name="book-file">
-        </div>
-        <div>
-            <label for="inputFileName">Название файла</label>
-            <input id="inputFileName" type="text" value="<%= book.fileName %>" name="fileName">
+        <div class="input">
+            <label for="inputFileBook">Book file</label>
+            <input id="inputFileBook" type="file" name="book-file">
         </div>
     </div>
     <div>
-        <button type="submit">Сохранить</button>
+        <button type="submit">Save</button>
     </div>
 </form>

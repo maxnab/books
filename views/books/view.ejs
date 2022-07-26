@@ -1,23 +1,22 @@
+<%- include('./styles') %>
 <%- include('./menu') %>
-<div>
-    <a href="/api/books/<%= book.id %>/update">Update book</a>
-</div>
-<div>
+<div class="view">
     <div>
-        <div>
-            <h3>Название: <span><%- book.title %></span></h3>
-        </div>
-        <div>
-            <h3>Описание: <span><%- book.description %></span></h3>
-        </div>
-        <div>
-            <h3>Авторы: <span><%- book.authors %></span></h3>
-        </div>
-        <div>
-            <h3>Избранное: <span><%- book.authors ? 'Yes' : 'No' %></span></h3>
-        </div>
-        <div>
-            <a href="/api/books/<%= book.id %>/download">Скачать книгу</a>
-        </div>
+    <div>
+        <h3>Title: <span><%- book.title %></span></h3>
+    </div>
+    <div>
+        <h3>Description: <span><%- book.description %></span></h3>
+    </div>
+    <div>
+        <h3>Authors: <span><%- book.authors %></span></h3>
+    </div>
+    <div>
+        <h3>Favorite: <span><%- book.favorite ? 'Yes' : 'No' %></span></h3>
+    </div>
+    <div>
+        <a href="/api/books/<%= book.id %>/download">Download book</a>
+        <a href="/api/books/<%= book.id %>/update">Update book</a>
+    </div>
     </div>
 </div>

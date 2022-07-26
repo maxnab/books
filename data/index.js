@@ -27,11 +27,8 @@ const shelf = {
   ],
 };
 
-const keys = {
-  title: 'Название',
-  description: 'Описание',
-  authors: 'Авторы',
-  id: 'Артикул',
+const getCheckboxValue = (value) => {
+  return value === "on";
 }
 
-module.exports = { shelf, Book, keys };
+module.exports = { shelf, Book, getCheckboxValue };

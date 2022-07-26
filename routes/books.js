@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const fileMulter = require("../middleware/file");
-const { shelf, Book, keys } = require("../data");
+const { shelf, Book, getCheckboxValue } = require("../data");
 
-router.get('/', (request, response, next) => {
+router.get('/', (request, response) => {
   const { books } = shelf;
 
   response.render('books/index', {
@@ -48,13 +48,14 @@ router.get('/:id/view', (request, response) => {
 router.get('/create', (request, response) => {
   response.render('books/create', {
     book: new Book(),
-    keys: keys,
   });
 })
 
 router.post('/create', fileMulter.single('book-file'), (request, response) => {
   const { books } = shelf;
-  const { title, description, authors, favorite } = request.body;
+  const { title, description, authors, favorite = 'false' } = request.body;
+
+  console.log('fav', favorite)
 
   let fileBook = '';
   let fileName = '';
@@ -65,7 +66,9 @@ router.post('/create', fileMulter.single('book-file'), (request, response) => {
     fileName = request.file.filename;
   }
 
-  const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook);
+  console.log('create fav', favorite)
+
+  const newBook = new Book(title, description, authors, getCheckboxValue(favorite), fileCover, fileName, fileBook);
   books.push(newBook);
   response.status(201);
   response.redirect('/api/books')
@@ -80,16 +83,17 @@ router.get('/:id/update', (request, response) => {
 
   response.render('books/update', {
     book: books[idx],
-    keys: keys,
   })
 })
 
 router.post('/:id/update', fileMulter.single('book-file'), (request, response) => {
   const { books } = shelf;
-  const { title = '', authors = '', description = '', favorite = '', fileCover = '', fileName = '' } = request.body;
+  const { title = '', authors = '', description = '', favorite = 'false', fileCover = '', fileName = '' } = request.body;
   const { id } = request.params;
 
   console.log('id', id);
+  console.log('update fav', favorite)
+
   console.log('put', request.body);
 
   const idx = books.findIndex(el => el.id === id);
@@ -100,7 +104,7 @@ router.post('/:id/update', fileMulter.single('book-file'), (request, response) =
       title,
       authors,
       description,
-      favorite,
+      favorite: getCheckboxValue(favorite),
       fileCover,
       fileName,
     }
@@ -143,8 +147,9 @@ router.get('/:id/download', (request, response) => {
       }
     });
   } else {
-    response.status(404)
-    response.json({ message: 'Book not found', code: 404 })
+    response.status(404);
+    response.render('errors/404');
+    response.json({ message: 'Book not found', code: 404 });
   }
 })
 
