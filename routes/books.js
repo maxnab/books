@@ -1,43 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const { v4: uuid } = require("uuid");
 const fileMulter = require("../middleware/file");
-const path = require("path");
-const fs = require("fs");
+const { shelf, Book, keys } = require("../data");
 
-class Book {
-  constructor(title = '',
-              description = '',
-              authors = '',
-              favorite = '',
-              fileCover = '',
-              fileName = '',
-              fileBook = '',
-              id = uuid()) {
-    this.title = title;
-    this.description = description;
-    this.authors = '';
-    this.favorite = favorite;
-    this.fileCover = fileCover;
-    this.fileBook = fileBook;
-    this.fileName = fileName;
-    this.id = id;
-  }
-}
-
-const shelf = {
-  books: [
-    new Book(),
-    new Book(),
-  ],
-};
-
-router.get('/', (request, response) => {
+router.get('/', (request, response, next) => {
   const { books } = shelf;
+
+  response.render('books/index', {
+    books: books
+  })
+})
+
+router.get('/all', (request, response) => {
+  const { books } = shelf;
+
   response.json(books);
 })
 
-router.get('/:id', (request, response) => {
+router.get('/:id/book', (request, response) => {
   const { books } = shelf;
   const { id } = request.params;
   const idx = books.findIndex(el => el.id === id)
@@ -50,13 +30,36 @@ router.get('/:id', (request, response) => {
   }
 })
 
-router.post('/', fileMulter.single('book-file'), (request, response) => {
+router.get('/:id/view', (request, response) => {
+  const { books } = shelf;
+  const { id } = request.params;
+
+  const idx = books.findIndex(el => el.id === id);
+
+  const book = books[idx];
+
+  if (idx !== -1) {
+    response.render('books/view', {
+      book: book
+    })
+  }
+})
+
+router.get('/create', (request, response) => {
+  response.render('books/create', {
+    book: new Book(),
+    keys: keys,
+  });
+})
+
+router.post('/create', fileMulter.single('book-file'), (request, response) => {
   const { books } = shelf;
   const { title, description, authors, favorite } = request.body;
 
   let fileBook = '';
   let fileName = '';
   let fileCover = '';
+
   if (request.file) {
     fileBook = request.file.path;
     fileName = request.file.filename;
@@ -65,13 +68,29 @@ router.post('/', fileMulter.single('book-file'), (request, response) => {
   const newBook = new Book(title, description, authors, favorite, fileCover, fileName, fileBook);
   books.push(newBook);
   response.status(201);
+  response.redirect('/api/books')
   response.json(newBook);
 })
 
-router.put('/:id', (request, response) => {
+router.get('/:id/update', (request, response) => {
+  const { books } = shelf;
+  const { id } = request.params;
+
+  const idx = books.findIndex(el => el.id === id);
+
+  response.render('books/update', {
+    book: books[idx],
+    keys: keys,
+  })
+})
+
+router.post('/:id/update', fileMulter.single('book-file'), (request, response) => {
   const { books } = shelf;
   const { title = '', authors = '', description = '', favorite = '', fileCover = '', fileName = '' } = request.body;
   const { id } = request.params;
+
+  console.log('id', id);
+  console.log('put', request.body);
 
   const idx = books.findIndex(el => el.id === id);
 
@@ -86,6 +105,7 @@ router.put('/:id', (request, response) => {
       fileName,
     }
 
+    response.redirect('/api/books');
     response.json(books[idx]);
   } else {
     response.status(404);
