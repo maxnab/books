@@ -55,8 +55,6 @@ router.post('/create', fileMulter.single('book-file'), (request, response) => {
   const { books } = shelf;
   const { title, description, authors, favorite = 'false' } = request.body;
 
-  console.log('fav', favorite)
-
   let fileBook = '';
   let fileName = '';
   let fileCover = '';
@@ -66,13 +64,10 @@ router.post('/create', fileMulter.single('book-file'), (request, response) => {
     fileName = request.file.filename;
   }
 
-  console.log('create fav', favorite)
-
   const newBook = new Book(title, description, authors, getCheckboxValue(favorite), fileCover, fileName, fileBook);
   books.push(newBook);
   response.status(201);
   response.redirect('/api/books')
-  response.json(newBook);
 })
 
 router.get('/:id/update', (request, response) => {
@@ -91,11 +86,6 @@ router.post('/:id/update', fileMulter.single('book-file'), (request, response) =
   const { title = '', authors = '', description = '', favorite = 'false', fileCover = '', fileName = '' } = request.body;
   const { id } = request.params;
 
-  console.log('id', id);
-  console.log('update fav', favorite)
-
-  console.log('put', request.body);
-
   const idx = books.findIndex(el => el.id === id);
 
   if (idx !== -1){
@@ -110,10 +100,9 @@ router.post('/:id/update', fileMulter.single('book-file'), (request, response) =
     }
 
     response.redirect('/api/books');
-    response.json(books[idx]);
   } else {
     response.status(404);
-    response.json({ message: 'Book not updated', code: 404 });
+    response.redirect('/api/books');
   }
 })
 
@@ -143,13 +132,12 @@ router.get('/:id/download', (request, response) => {
     response.download(file, fileName, (err) => {
       if (err) {
         response.status(404);
-        response.json({ message: 'File download error', code: 404 })
+        response.render('errors/404');
       }
     });
   } else {
     response.status(404);
     response.render('errors/404');
-    response.json({ message: 'Book not found', code: 404 });
   }
 })
 
