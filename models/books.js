@@ -15,15 +15,12 @@ const booksSchema = new Schema({
   },
   favorite: {
     type: String,
-    // required: true,
   },
   fileCover: {
     type: String,
-    // required: true,
   },
   fileName: {
     type: String,
-    // required: true,
   }
 });
 

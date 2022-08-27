@@ -2,4 +2,9 @@ const getCheckboxValue = (value) => {
   return value === "on";
 }
 
-module.exports = { getCheckboxValue };
+const options = {
+  usernameField: "username",
+  passwordField: "password",
+}
+
+module.exports = { getCheckboxValue, options };

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const fileMulter = require("../middleware/file");
 const Books = require('../../models/books');
+const fileMulter = require("../middleware/file");
 const { getCheckboxValue } = require("../data");
 
 router.get('/', async (request, response) => {
