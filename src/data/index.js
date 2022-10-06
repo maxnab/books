@@ -7,4 +7,4 @@ const options = {
   passwordField: "password",
 }
 
-module.exports = { getCheckboxValue, options };
+export { getCheckboxValue, options };

@@ -1,14 +1,16 @@
-const path = require('path');
-const express = require('express');
-const session = require('express-session');
-const mongoose = require('mongoose');
-const userRouter = require('./routes/user');
-const booksRouter = require('./routes/books');
-const Users = require("../models/users");
-const passport = require('passport');
-const LocalStrategy = require('passport-local');
-const { verifyPassword } = require("./db/localDb");
-const {options} = require("./data");
+import path from 'path';
+import express from 'express';
+import passport from 'passport';
+import mongoose from 'mongoose';
+import session from 'express-session';
+import LocalStrategy from 'passport-local';
+import userRouter from './routes/user.js';
+import booksRouter from './routes/books.js';
+import Users from "../models/users.js";
+import { verifyPassword } from "./db/localDb.js";
+import { options } from "./data";
+
+// TODO
 require('dotenv').config({
   path: path.resolve(__dirname, '../.env')
 });

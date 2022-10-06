@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import Books from '../../models/books.ts';
+import fileMulter from "../middleware/file.js";
+import { getCheckboxValue } from "../data";
+
 const router = express.Router();
-const Books = require('../../models/books');
-const fileMulter = require("../middleware/file");
-const { getCheckboxValue } = require("../data");
 
 router.get('/', async (request, response) => {
   try {

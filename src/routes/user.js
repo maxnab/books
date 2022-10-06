@@ -1,6 +1,7 @@
-const express = require('express');
-const passport = require("passport");
-const Users = require('../../models/users');
+import express from 'express';
+import passport from "passport";
+import Users from '../../models/users.js';
+
 const router = express.Router();
 
 router.get('/login', (request, response) => {
@@ -63,4 +64,4 @@ router.post('/signup', async (request, response) => {
   }
 })
 
-module.exports = router;
+export default router;

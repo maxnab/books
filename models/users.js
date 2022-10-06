@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const passportLocalMongoose = require("passport-local-mongoose");
+import { Schema, model } from 'mongoose';
+import passportLocalMongoose from "passport-local-mongoose";
 
 const usersSchema = new Schema({
   username: {
