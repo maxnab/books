@@ -2,8 +2,15 @@ import express from 'express';
 import Books from '../../models/books.ts';
 import fileMulter from "../middleware/file.js";
 import { getCheckboxValue } from "../data";
+import {BooksRepository, container} from "../containers/containers";
 
 const router = express.Router();
+
+router.get(':id', async (req, res, next) => {
+  const repo = container.get(BooksRepository);
+  const book = await repo.getBook(req.params.id);
+  res.json(book);
+})
 
 router.get('/', async (request, response) => {
   try {

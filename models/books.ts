@@ -33,12 +33,5 @@ const booksSchema = new mongoose.Schema<Book>({
   }
 });
 
-class BooksRepository {
-  createBook(book: Book){}
-  getBook(id: string){}
-  getBooks(){}
-  updateBook(id: string){}
-  deleteBook(id: string){}
-}
-
+export type { Book }
 export default mongoose.model<Book>('Books', booksSchema)
