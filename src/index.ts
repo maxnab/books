@@ -1,13 +1,13 @@
 import path from 'path';
 import express from 'express';
 import passport from 'passport';
-import mongoose from 'mongoose';
+import mongoose, {CallbackError} from 'mongoose';
 import session from 'express-session';
-import LocalStrategy from 'passport-local';
-import userRouter from './routes/user.js';
-import booksRouter from './routes/books.js';
-import Users from "../models/users.js";
-import { verifyPassword } from "./db/localDb.js";
+import {Strategy as LocalStrategy, VerifyFunctionWithRequest} from 'passport-local';
+import userRouter from './routes/user';
+import booksRouter from './routes/books';
+import Users, {User} from "../models/users";
+import { verifyPassword } from "./db/localDb";
 import { options } from "./data";
 
 // TODO
@@ -15,9 +15,9 @@ require('dotenv').config({
   path: path.resolve(__dirname, '../.env')
 });
 
-const verify = async (username, password, done) => {
+const verify: VerifyFunctionWithRequest = async (req, username, password, done) => {
   try {
-    const user = await Users.find({ username }).select('-__v')
+    const [ user ] = await Users.find({ username }).select('-__v');
 
     if(verifyPassword(user, password)) {
       return done(null, false)
@@ -35,13 +35,12 @@ const verify = async (username, password, done) => {
 
 passport.use('local', new LocalStrategy(options, verify))
 
-passport.serializeUser((userArray, done) => {
-  const [ user ] = userArray;
-  done(null, user.id);
+passport.serializeUser<string>((user, done) => {
+  done(null, (user as User).id);
 });
 
 passport.deserializeUser((id, done) => {
-  Users.findOne({ id }, (err, user) => {
+  Users.findOne({ id }, (err: CallbackError, user: User) => {
     done(err, user);
   });
 });
@@ -61,7 +60,7 @@ app.set("view engine", "ejs");
 app.use('/api/user', userRouter);
 app.use('/api/books', booksRouter);
 
-async function init(port, dbUrl) {
+async function init(port: string | number, dbUrl: string) {
   try {
     await mongoose.connect(dbUrl);
     app.listen(port, () => {
@@ -75,4 +74,4 @@ async function init(port, dbUrl) {
 const DB_URL = process.env.DB_URL;
 const PORT = process.env.PORT || 3000;
 
-init(PORT, DB_URL);
+void init(PORT, DB_URL);

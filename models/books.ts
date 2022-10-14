@@ -7,6 +7,7 @@ interface Book extends mongoose.Document{
   favorite?: string;
   fileCover?: string;
   fileName?: string;
+  fileBook?: string;
 }
 
 const booksSchema = new mongoose.Schema<Book>({
@@ -29,6 +30,9 @@ const booksSchema = new mongoose.Schema<Book>({
     type: String,
   },
   fileName: {
+    type: String,
+  },
+  fileBook: {
     type: String,
   }
 });

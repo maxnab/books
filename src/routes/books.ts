@@ -1,6 +1,6 @@
 import express from 'express';
-import Books from '../../models/books.ts';
-import fileMulter from "../middleware/file.js";
+import Books from '../../models/books';
+import fileMulter from "../middleware/file";
 import { getCheckboxValue } from "../data";
 import {BooksRepository, container} from "../containers/containers";
 
@@ -159,4 +159,4 @@ router.get('/:id/download', async (request, response) => {
   }
 })
 
-module.exports = router;
+export default router;
